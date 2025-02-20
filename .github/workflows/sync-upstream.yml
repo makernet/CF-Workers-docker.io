@@ -1,0 +1,23 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 每天 00:00 UTC 运行
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出你的 Fork 仓库
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: 添加上游仓库
+        run: |
+          git remote add upstream https://github.com/makernet/CF-Workers-docker.io.git
+          git fetch upstream
+          git checkout main
+          git merge upstream/main --allow-unrelated-histories
+          git push origin main
