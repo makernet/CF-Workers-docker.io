@@ -1,4 +1,22 @@
+// _worker.js
 
+// Docker镜像仓库主机地址
+let hub_host = 'registry-1.docker.io';
+// Docker认证服务器地址
+const auth_url = 'https://auth.docker.io';
+
+let 屏蔽爬虫UA = ['netcraft'];
+
+// 根据主机名选择对应的上游地址
+function routeByHosts(host) {
+	// 定义路由表
+	const routes = {
+		// 生产环境
+		"quay": "quay.io",
+		"gcr": "gcr.io",
+		"k8s-gcr": "k8s.gcr.io",
+		"k8s": "registry.k8s.io",
+		"ghcr": "ghcr.io",
 		"cloudsmith": "docker.cloudsmith.io",
 		"nvcr": "nvcr.io",
 
