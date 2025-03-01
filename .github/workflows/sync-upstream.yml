@@ -30,7 +30,7 @@ jobs:
           git fetch upstream
           git checkout main  # 这里改为你的上游主要分支，一般可能是main或者master
           git checkout -b temp-merge  # 创建一个临时分支
-          git merge -X theirs upstream/master --allow-unrelated-histories  # 默认保留上游代码
+          git merge -X theirs upstream/main --allow-unrelated-histories  # 默认保留上游代码
           git checkout main  # 回到主分支
           rsync -a .github/workflows/ ../workflows-backup/  # 备份工作流目录
           git reset --hard temp-merge  # 硬重置到合并后的状态
