@@ -26,22 +26,22 @@ jobs:
 
       - name: 添加上游仓库，并保留本地 .github/workflows/ 目录
         run: |
-          git remote add upstream https://github.com/cmliu/CF-Workers-docker.io || true
+          git remote add upstream https://github.com/cmliu/CF-Workers-docker.io || true # 这里改为你的上游仓库
           git fetch upstream
-          git checkout main
-          git checkout -b temp-merge
+          git checkout main # 这里改为你的上游主要分支，一般可能是main或者master
+          git checkout -b temp-merge # 创建一个临时分支
           
           # 先合并上游，但跳过 .github/workflows 目录
-          git read-tree --prefix=.github/workflows/ -u HEAD  # 备份本地 workflows
-          git merge -X theirs upstream/main --allow-unrelated-histories || true
-          git checkout HEAD -- .github/workflows/  # 恢复本地 workflows
+          git read-tree --prefix=.github/workflows/ -u HEAD  # 备份本地 .github/workflows/
+          git merge -X theirs upstream/main --allow-unrelated-histories || true # 默认保留上游代码，但 .github/workflows/ 目录不会被影响。
+          git checkout HEAD -- .github/workflows/  # 恢复本地的 .github/workflows/ 目录，确保合并不会覆盖它
           
-          git checkout main
+          git checkout main # 回到主分支，一般可能是main或者master
           git reset --hard temp-merge  # 硬重置到合并后的状态
-          git branch -D temp-merge
+          git branch -D temp-merge # 删除临时分支
           
-          git add .github/workflows/
-          git commit -m "同步上游代码，并保留本地 workflows" || true
+          git add .github/workflows/  # 添加之前备份的本地 .github/workflows/
+          git commit -m "同步上游代码，并保留本地 .github/workflows/" || true
 
       - name: 推送到 Fork 仓库
         env:
